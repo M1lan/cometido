@@ -2,10 +2,7 @@ from marshmallow_jsonapi import Schema, fields
 from marshmallow import validate
 
 from app.users.models import UsersSchema
-from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy.exc import SQLAlchemyError
-
-db = SQLAlchemy()
+from app.db import db
 
 
 class CRUD():
@@ -34,7 +31,7 @@ class Tasks(db.Model, CRUD):
     importance = db.Column(db.Integer, nullable=False)
     #user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     creation_time = db.Column(db.DateTime, server_default=db.func.current_timestamp(), nullable=False)
-    is_done = db.Column(db.Boolean, server_default="false", nullable=False)
+    #is_done = db.Column(db.Boolean, server_default="false", nullable=False)
 
     def __init__(self, title, complexity, urgency, importance):
 
