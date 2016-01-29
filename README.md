@@ -4,15 +4,18 @@ http://techarena51.com/index.php/buidling-a-database-driven-restful-json-api-in-
 
 ### Steps to Install
 
-     git clone 
+     git clone
      pip install -r requirements.txt
-     gedit config.py
+
+     # Edit your config file
+     config.py
+     
      #Add  and save your database details
      python migrate.py db init
      python migrate.py db migrate
      python migrate.py db upgrade
      python run.py
-     
+
 ### Resource URL’s
 
 - GET	http://localhost:5000/api/v1/users.json	Returns a list of all users
