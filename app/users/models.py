@@ -6,11 +6,11 @@ from sqlalchemy.exc import SQLAlchemyError
 db = SQLAlchemy()
 
 
-class CRUD():   
+class CRUD():
 
     def add(self, resource):
         db.session.add(resource)
-        return db.session.commit()   
+        return db.session.commit()
 
     def update(self):
         return db.session.commit()
@@ -20,8 +20,9 @@ class CRUD():
         return db.session.commit()
 
 class Users(db.Model, CRUD):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(250), unique=True, nullable=False)   
+    email = db.Column(db.String(250), unique=True, nullable=False)
     name = db.Column(db.String(250), nullable=False)
     creation_time = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
     is_active = db.Column(db.Boolean, server_default="false", nullable=False)
@@ -31,17 +32,17 @@ class Users(db.Model, CRUD):
         self.email = email
         self.name = name
         self.is_active = is_active
-      
-           
+
+
 class UsersSchema(Schema):
 
     not_blank = validate.Length(min=1, error='Field cannot be blank')
     id = fields.Integer(dump_only=True)
-    email = fields.Email(validate=not_blank)    
+    email = fields.Email(validate=not_blank)
     name = fields.String(validate=not_blank)
     is_active = fields.Boolean()
- 
-    
+
+
      #self links
     def get_top_level_links(self, data, many):
         if many:
@@ -49,8 +50,45 @@ class UsersSchema(Schema):
         else:
             self_link = "/users/{}".format(data['id'])
         return {'self': self_link}
-   
-    
+
+
     class Meta:
         type_ = 'users'
-        
+
+class Tasks(db.Model, CRUD):
+    __tablename__ = 'tasks'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(250), unique=True, nullable=False)
+    description = db.Column(db.String(250), nullable=False)
+    due_datetime = db.Column(db.DateTime, server_default=db.func.current_timestamp(), nullable=True)
+    # TODO: Find a nice way to create and migrate enums!
+    complexity = db.Column(db.Integer)
+    urgency = db.Column(db.Integer)
+    importance = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    creation_time = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
+    is_done = db.Column(db.Boolean, server_default="false", nullable=False)
+
+    def __init__(self,  title):
+
+        self.title = title
+
+
+class TaskSchema(Schema):
+
+    not_blank = validate.Length(min=1, error='Field cannot be blank')
+    id = fields.Integer(dump_only=True)
+    title = fields.Email(validate=not_blank)
+
+
+     #self links
+    def get_top_level_links(self, data, many):
+        if many:
+            self_link = "/tasks/"
+        else:
+            self_link = "/tasks/{}".format(data['id'])
+        return {'self': self_link}
+
+
+    class Meta:
+        type_ = 'tasks'
