@@ -51,7 +51,7 @@ class TasksSchema(Schema):
     #user_id = fields.Nested(UsersSchema, only=['id', 'name'])
     title = fields.Email(validate=not_blank)
     complexity = fields.Integer()
-    urgencu = fields.Integer()
+    urgency = fields.Integer()
     importance = fields.Integer()
 
      #self links
