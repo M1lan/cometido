@@ -25,14 +25,14 @@ class CRUD():
 class Tasks(db.Model, CRUD):
     __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(250), unique=True, nullable=False)
+    title = db.Column(db.String(255), unique=True, nullable=False)
     description = db.Column(db.String(250), nullable=True)
     due_datetime = db.Column(db.DateTime, server_default=db.func.current_timestamp(), nullable=True)
     # TODO: Find a nice way to create and migrate enums!
-    complexity = db.Column(db.Integer)
-    urgency = db.Column(db.Integer)
-    importance = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    complexity = db.Column(db.Integer, nullable=False)
+    urgency = db.Column(db.Integer, nullable=False)
+    importance = db.Column(db.Integer, nullable=False)
+    #user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     creation_time = db.Column(db.DateTime, server_default=db.func.current_timestamp(), nullable=False)
     is_done = db.Column(db.Boolean, server_default="false", nullable=False)
 
@@ -46,11 +46,13 @@ class Tasks(db.Model, CRUD):
 
 class TasksSchema(Schema):
 
-    not_blank = validate.Length(min=1, error='Field cannot be blank')
+    not_blank = validate.Length(min=3, error='Field cannot be blank')
     id = fields.Integer(dump_only=True)
-    user_id = fields.Nested(UsersSchema, only=['id', 'name'])
+    #user_id = fields.Nested(UsersSchema, only=['id', 'name'])
     title = fields.Email(validate=not_blank)
-
+    complexity = fields.Integer()
+    urgencu = fields.Integer()
+    importance = fields.Integer()
 
      #self links
     def get_top_level_links(self, data, many):
