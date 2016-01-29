@@ -1,3 +1,4 @@
+# Example User post
 {
   "data": {
     "type": "users",
@@ -6,30 +7,23 @@
       "email": "leo@leog.in",
       "is_active": "true"
       "role":"admin",
-     
+
       }
      }
   }
-{
-  "data": {
-    "type": "roles",
-    "attributes": {
-      "name": "admin6"
-    }
-  }
-  
-}
- 
 
 
+
+# Example Task post
 {
   "data": {
-    "type": "languages",
+    "type": "tasks",
     "attributes": {
-      "language_code": "leo",
-      "language_name": "spanish",
-      "dir":"ltr",
-     
+      "title": "UnitTesting",
+      "complexity": "3",
+      "urgency": "3",
+      "importance": "3"
+
       }
      }
   }
