@@ -1,9 +1,9 @@
 from flask import Flask, Response
 
 class MyResponse(Response):
-     default_mimetype = 'application/xml'
-     
-    
+     default_mimetype = 'application/json'
+
+
 
 # http://flask.pocoo.org/docs/0.10/patterns/appfactories/
 def create_app(config_filename):
@@ -14,10 +14,12 @@ def create_app(config_filename):
     from app.users.models import db
     db.init_app(app)
 
-    # Blueprints   
+    # Blueprints
     from app.users.views import users
     app.register_blueprint(users, url_prefix='/api/v1/users')
-    
+
+    from app.tasks.views import tasks
+    app.register_blueprint(tasks, url_prefix='/api/v1/tasks')
+
 
     return app
-    
