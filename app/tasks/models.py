@@ -26,17 +26,17 @@ class Tasks(db.Model, CRUD):
     __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250), unique=True, nullable=False)
-    description = db.Column(db.String(250), nullable=False)
+    description = db.Column(db.String(250), nullable=True)
     due_datetime = db.Column(db.DateTime, server_default=db.func.current_timestamp(), nullable=True)
     # TODO: Find a nice way to create and migrate enums!
     complexity = db.Column(db.Integer)
     urgency = db.Column(db.Integer)
     importance = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    creation_time = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
+    creation_time = db.Column(db.DateTime, server_default=db.func.current_timestamp(), nullable=False)
     is_done = db.Column(db.Boolean, server_default="false", nullable=False)
 
-    def __init__(self,  title):
+    def __init__(self, title, complexity, urgency, importance):
 
         self.title = title
         self.complexity = complexity
