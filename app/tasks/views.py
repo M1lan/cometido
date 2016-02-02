@@ -32,8 +32,15 @@ class TasksList(Resource):
         try:
                 schema.validate(raw_dict)
                 task_dict = raw_dict['data']['attributes']
-                task = Tasks(task_dict['title'], task_dict['complexity'],
-                    task_dict['urgency'], task_dict['importance'])
+                task = Tasks(
+                    task_dict['title'],
+                    task_dict['description'],
+                    task_dict['due_datetime'],
+                    task_dict['complexity'],
+                    task_dict['urgency'],
+                    task_dict['importance'],
+                    task_dict['user_id']
+                    )
                 task.add(task)
                 query = Tasks.query.get(task.id)
                 results = schema.dump(query).data
@@ -49,18 +56,6 @@ class TasksList(Resource):
                 resp = jsonify({"error": str(e)})
                 resp.status_code = 403
                 return resp
-
-# Tasks
-class TaskList(Resource):
-    """http://jsonapi.org/format/#fetching
-    A server MUST respond to a successful request to fetch an individual resource or resource collection with a 200 OK response.
-    A server MUST respond with 404 Not Found when processing a request to fetch a single resource that does not exist, except when the request warrants a 200 OK response with null as the primary data (as described above)
-    a self link as part of the top-level links object"""
-    def get(self):
-        tasks_query = Tasks.query.all()
-        results = schema.dump(tasks_query, many=True).data
-        return results
-
 
 
 class TasksUpdate(Resource):

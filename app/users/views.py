@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify, make_response
 from app.users.models import Users, UsersSchema, db
 from flask_restful import Api, Resource
+from werkzeug.security import generate_password_hash
+
 
 
 from sqlalchemy.exc import SQLAlchemyError
@@ -32,7 +34,11 @@ class UsersList(Resource):
         try:
                 schema.validate(raw_dict)
                 user_dict = raw_dict['data']['attributes']
-                user = Users(user_dict['email'], user_dict['name'],user_dict['is_active'])
+                user = Users(
+                    user_dict['email'],
+                    generate_password_hash(user_dict['password']),
+                    user_dict['name'],
+                    user_dict['is_active'])
                 user.add(user)
                 query = Users.query.get(user.id)
                 results = schema.dump(query).data
