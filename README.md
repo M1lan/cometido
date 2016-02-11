@@ -5,12 +5,23 @@ http://techarena51.com/index.php/buidling-a-database-driven-restful-json-api-in-
 ### Steps to Install
 
      git clone
+
+     # Create your python virtual environment
+     mkvirtualenv smarttask
+     workon smarttask
+
      pip install -r requirements.txt
 
-     # Edit your config file
-     config.py
+     # Make the setup for the DB executable
+     chmod +x setup.sh
 
-     #Add  and save your database details
+     # Create a fresh User, and DB in postgres
+     ./setup.sh
+
+     # Add in the first three lines the credentials which you have typed in before
+     edit config.py
+
+     # Now you have a empty DB which the "smarttask db_manage can access"
      python db_manage.py db init
      python db_manage.py db migrate
      python db_manage.py db upgrade

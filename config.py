@@ -2,6 +2,7 @@
 pg_db_username = 'smarttask'
 pg_db_password = 'easypassword'
 pg_db_name = 'smarttask'
+
 pg_db_hostname = 'localhost'
 
 
